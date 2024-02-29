@@ -10,15 +10,15 @@ import { toast } from 'react-toastify';
 
 const NavBar = () => {
 
-
     const {isLoggedin} = useSelector(state=>state.auth);
     const dispatch = useDispatch();
 
   return (
     <div className='flex justify-between items-center w-11/12 max-w-[1160px] py-4 mx-auto flex-wrap gap-y-4 gap-x-8'>
 
-     <Link to='/' className=' mx-auto'>
+     <Link to='/' className=' mx-auto flex gap-1 justify-center items-start text-white text-xl font-semibold'>
         <img src={logo} alt='logo' width={160} height={32} loading='lazy'></img>
+        <span>3.0</span>
      </Link>
 
      <nav className='navbar mx-auto'>
