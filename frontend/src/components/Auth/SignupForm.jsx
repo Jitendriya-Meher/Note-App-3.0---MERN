@@ -64,10 +64,14 @@ const SignupForm = () => {
         
         if( password !== confirmPassword){
             toast.error("Passwords do not match");
+            setDisabledOtpButton(false);
+            setDisabledSignupButton(false);
             return;
         }
         if( !password || !firstName || !lastName || !email){
             toast.error("please enter all required fields");
+            setDisabledOtpButton(false);
+            setDisabledSignupButton(false);
             return;
         }
 

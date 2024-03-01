@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import { PiSignInBold } from "react-icons/pi";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { logInAuth } from '../../store/Slices/authSlice';
 
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
@@ -49,8 +48,7 @@ const ChangePassword = () => {
         confirmPassword:""
     });
 
-    const dispatch = useDispatch();
-    const {baseURL} = useSelector((state) => (state.auth));
+    const {baseURL,token} = useSelector((state) => (state.auth));
 
     function changeHandler(e){
         const {name,value} = e.target;
@@ -74,28 +72,40 @@ const ChangePassword = () => {
         e.preventDefault();
         setDisabledButton(true);
 
+        const conf = window.confirm("Are you sure you want to change your password?");
+
+        if( !conf){
+            setDisabledButton(false);
+            return;
+        }
+
         try{
 
-            const userPayload = {
-                password: formData.password,
-                email: formData.email
-            };
+            if( formData.password !== formData.confirmPassword){
+                setDisabledButton(false);
+                toast.error("password and confirm password does not match");
+                return;
+            }
 
-            const res = await axios.post(`${baseURL}/api/auth/login`,userPayload);
+            if( !formData.oldPassword || !formData.password){
+                setDisabledButton(false);
+                toast.error("Please enter all required fields");
+                return;
+            }
+
+            const res = await axios.patch(`${baseURL}/api/user/edit/password`,{
+                oldPassword: formData.oldPassword,
+                password: formData.password
+            },{
+                headers:{
+                    Authorization: token
+                }
+            });
             const data = await res.data;
-
+            
             if( data.success){
                 toast.success(data.message);
-
-                const payload = {
-                    email: data.existingUser.email,
-                    username: data.existingUser.username,
-                    token: data.token,
-                    address: data.existingUser.address,
-                    phone: data.existingUser.phone,
-                    isAdmin: data.existingUser.isAdmin
-                };
-                dispatch(logInAuth(payload));
+                navigate("/profile");
             }
             else{
                 toast.error(data.message);

@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
-import { PiSignInBold } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logOutAuth } from '../../store/Slices/authSlice';
 
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -38,9 +42,56 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const DeleteAccount = () => {
 
+    const {baseURL,token} = useSelector((state) => (state.auth));
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [disabledButton, setDisableButton] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState("");
+
+    async function deleteHandler() {
+
+        setDisableButton(true);
+
+        const conf = window.confirm("Are you sure you want to delete your account?");
+
+        if( !conf){
+            setDisableButton(false);
+            return;
+        }
+
+        try{
+            if( !password){
+                toast.error("Please enter your password");
+                setDisableButton(false);
+                return; 
+            }
+
+            const res = await axios.post(`${baseURL}/api/user/delete`,{
+                password:password
+            },{
+                headers:{
+                    Authorization: token
+                }
+            });
+            const data = await res.data;
+
+            if( data.success){
+                toast.success(data.message);
+                navigate("/login");
+                dispatch(logOutAuth());
+            }
+            else{
+                toast.error(data.message);
+            }
+        }
+        catch(err){
+            toast.error(err.message);
+        }
+
+        setDisableButton(false);
+    }
 
   return (
     <div className=' w-full'>
@@ -91,6 +142,7 @@ const DeleteAccount = () => {
             <button
             className='bg-red-600 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] flex mt-8 items-center justify-center gap-x-2 disabled:bg-gray-500 w-full'
             disabled={disabledButton}
+            onClick={deleteHandler}
             >
                 <p className="text-[1.1rem]">
                     Delete Your Account

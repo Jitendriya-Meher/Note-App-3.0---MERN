@@ -1,3 +1,4 @@
+const OtpModel = require("../models/otp-model");
 const UserModel = require("../models/user-model");
 const bcrypt = require("bcrypt");
 
@@ -92,6 +93,26 @@ const deleteUser = async ( req, res) => {
     try{
         const { userId } = req;
 
+        const { password} = req.body;
+
+        const existingUser = await UserModel.findById(userId);
+
+        if( !existingUser){
+            return res.json({
+                message:"User not found with this token",
+                success: false
+            });
+        }
+
+        const isMatch = await bcrypt.compare(password, existingUser.password);
+
+        if( !isMatch ){
+            return res.json({
+                message:"Please enter your correct password",
+                success: false
+            });
+        }
+
         const delUser = await UserModel.findByIdAndDelete(userId);
 
         if( !delUser){
@@ -101,10 +122,15 @@ const deleteUser = async ( req, res) => {
             });
         }
 
+        const delOtps = await OtpModel.deleteMany({
+            email: delUser.email
+        });
+
         return res.json({
             message: 'User deleted successfully',
             success: true,
             delUser,
+            delOtps
         });
 
     }

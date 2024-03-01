@@ -15,19 +15,19 @@ const Profile = () => {
             </Link>
 
             <NavLink to="/profile/change" className=" md:w-full">
-                <button className='py-[8px] bg-richblack-800 px-[12px] rounded-[8px] border border-richblack-700 w-full'>
+                <button className='py-[8px] bg-blue-800 px-[12px] rounded-[8px] border border-richblack-700 w-full'>
                     Change Profile
                 </button>
             </NavLink>
 
             <NavLink to="/profile/password" className=" md:w-full">
-                <button className='py-[8px] bg-richblack-800 px-[12px] rounded-[8px] border border-richblack-700 w-full'>
+                <button className='py-[8px] bg-orange-600 px-[12px] rounded-[8px] border border-richblack-700 w-full'>
                     Change Password
                 </button>
             </NavLink>
 
             <NavLink to="/profile/delete" className=" md:w-full">
-                <button className='py-[8px] bg-richblack-800 px-[12px] rounded-[8px] border border-richblack-700 w-full'>
+                <button className='py-[8px] bg-red-600 px-[12px] rounded-[8px] border border-richblack-700 w-full'>
                     Delete Account
                 </button>
             </NavLink>

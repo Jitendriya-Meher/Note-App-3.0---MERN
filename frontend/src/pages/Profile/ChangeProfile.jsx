@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai";
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { editAuth } from '../../store/Slices/authSlice';
 
 const ChangeProfile = () => {
 
-    const auth = useSelector((state) => (state.auth))
+    const auth = useSelector((state) => (state.auth));
+    const dispatch = useDispatch();
 
     const [username,setUsername] = useState(auth.username);
     const [email,setEmail] = useState(auth.email);
@@ -19,12 +20,20 @@ const ChangeProfile = () => {
 
     const navigate = useNavigate();
     
-    async function submitHandler(e){
-        e.preventDefault();
+    async function submitHandler(){
+
         setDisableButton(true);
+
+        const conf = window.confirm("Are you sure you want to change profile?");
+
+        if( !conf){
+            setDisableButton(false);
+            return;
+        }
 
         if( !username || !email || !location || !phone){
             toast.error("please enter all required fields");
+            setDisableButton(false);
             return;
         }
 
@@ -36,11 +45,19 @@ const ChangeProfile = () => {
         };
 
         try{
-            const data={};
+
+            const res = await axios.patch(`${auth.baseURL}/api/user/edit`,userPayload,{
+                headers:{
+                    Authorization: auth.token
+                }
+            });
+
+            const data = await res.data;
 
             if( data.success){
                 toast.success(data.message);
                 navigate("/profile");
+                dispatch(editAuth(userPayload));
             }
             else{
                 toast.error(data.message);
