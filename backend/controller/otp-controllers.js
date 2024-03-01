@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
         pass : process.env.MAIL_PASS
     }
 });
-const projectName = "Ecommerce JS";
+const projectName = "StudyNotion 3.0 by Jiksss...";
 
 
 const genetrateOTPSignup = async (req, res) => {

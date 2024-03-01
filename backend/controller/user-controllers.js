@@ -104,6 +104,7 @@ const deleteUser = async ( req, res) => {
             });
         }
 
+        // check the password is correct or not
         const isMatch = await bcrypt.compare(password, existingUser.password);
 
         if( !isMatch ){
@@ -122,6 +123,7 @@ const deleteUser = async ( req, res) => {
             });
         }
 
+        // also delete the user opts
         const delOtps = await OtpModel.deleteMany({
             email: delUser.email
         });
