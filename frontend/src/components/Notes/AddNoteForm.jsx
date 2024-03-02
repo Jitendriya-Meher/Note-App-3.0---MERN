@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { GiNotebook } from "react-icons/gi";
 import { toast } from 'react-toastify';
@@ -11,14 +11,15 @@ const AddNoteForm = ({noteTitle,noteDesc}) => {
     const [desc, setDesc] = useState(noteDesc);
     const auth = useSelector(state=>state.auth);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const [disableButton, setDisableButton] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const authToken = `${auth.token}`;
-        console.log("auth token: " , authToken);
+        setDisableButton(true);
+
         try{
-            const res = await axios.post(`http://localhost:4000/api/note/add`,
+            const res = await axios.post(`${auth.baseURL}/api/note/add`,
                 {title, description:desc},{
                     headers:{
                         Authorization: authToken
@@ -38,8 +39,8 @@ const AddNoteForm = ({noteTitle,noteDesc}) => {
         }
         catch(err){
             toast.error("please try again");
-            return;
         }
+        setDisableButton(false);
     }
 
   return (
@@ -83,7 +84,8 @@ const AddNoteForm = ({noteTitle,noteDesc}) => {
         
 
         <button
-        className='bg-yellow-50 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] flex mt-8 items-center justify-center gap-x-4'
+        className='bg-yellow-50 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] flex mt-8 items-center justify-center gap-x-4 disabled:bg-gray-500'
+        disabled={disableButton}
         >
             <p className="text-[1.1rem]">
                 Create Note

@@ -1,22 +1,26 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { FaEdit } from "react-icons/fa";
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const EditNoteForm = () => {
 
     const [title,setTitle] = useState('');
     const [desc, setDesc] = useState('');
+    const auth = useSelector((state) => (state.auth));
 
     const {id} = useParams();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const [disableButton, setDisableButton] = useState(false);
 
     const getNote = async () => {
+
+        setDisableButton(true);
+
         try{
-            const res = await axios.get(`http://localhost:4000/api/note/${id}`);
+            const res = await axios.get(`${auth.baseURL}/api/note/${id}`);
             console.log("res",res.data);
 
             const result = res.data;
@@ -35,12 +39,15 @@ const EditNoteForm = () => {
             toast.error("error in fetching note");
             navigate("/dashboard");
         }
+
+        setDisableButton(false);
     }
 
     const handleEdit = async (e) => {
         e.preventDefault();
+        setDisableButton(true);
         try{
-            const res = await axios.patch(`http://localhost:4000/api/note/edit/${id}`,{title,description:desc});
+            const res = await axios.patch(`${auth.baseURL}/api/note/edit/${id}`,{title,description:desc});
             console.log("res",res);
 
             const result = res.data;
@@ -56,6 +63,7 @@ const EditNoteForm = () => {
         catch(err){
             toast.error("error in editing note");
         }
+        setDisableButton(false);
     }
 
     useEffect(()=>{
@@ -104,7 +112,8 @@ const EditNoteForm = () => {
         
 
         <button
-        className='bg-yellow-50 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] flex mt-8 items-center justify-center gap-x-4'
+        className='bg-yellow-50 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] flex mt-8 items-center justify-center gap-x-4 disabled:bg-gray-500'
+        disabled={disableButton}
         >
             <p className="text-[1.1rem]">
                 Edit Note

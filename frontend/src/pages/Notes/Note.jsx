@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -12,12 +13,11 @@ const Note = () => {
     const getNote = async () => {
 
         try{
-            console.log("id",id);
 
             const res = await axios.get(`http://localhost:4000/api/note/${id}`);
             console.log("res",res.data);
 
-            const result = res.data;
+            const result = await res.data;
 
             if(result.success){
                 toast.success(result.message);
@@ -50,9 +50,17 @@ const Note = () => {
             <p className='text-[0.9rem] leading-[1.2rem] mt-4 text-right'>
                 <span className='text-richblack-100'>Created At </span>
                 <span className='text-blue-500 italic'>
-                    {note.createdAt}
+                    {moment(note.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
                 </span>
             </p>
+
+            <p className='text-[0.9rem] leading-[1.2rem] mt-1 text-right'>
+                <span className='text-richblack-100'>Updated At </span>
+                <span className='text-blue-500 italic'>
+                    {moment(note.updatedAt).format('MMMM Do YYYY, h:mm:ss a')}
+                </span>
+            </p>
+
 
             <p className='text-[1rem] leading-[1.2rem] mt-4 text-justify'>
                 <span className='text-richblack-100'>
