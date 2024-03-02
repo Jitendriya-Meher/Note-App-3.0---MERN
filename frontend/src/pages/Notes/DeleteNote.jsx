@@ -28,12 +28,12 @@ const DeleteNote = () => {
             }
             else{
                 toast.error(result.message);
-                navigate("/dashboard");
+                navigate(-1);
             }
         }
         catch(err){
             toast.error("error in fetching note");
-            navigate("/dashboard");
+            navigate(-1);
         }
         setDisableButton(false);
     }
@@ -51,7 +51,7 @@ const DeleteNote = () => {
 
             if(result.success){
                 toast.success(result.message);
-                navigate("/dashboard");
+                navigate(-1);
             }
             else{
                 toast.error(result.message);

@@ -25,6 +25,9 @@ import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import AdminComp from "./components/Admin/AdminComp";
 import AdminContact from "./pages/Admin/AdminContact";
 import AdminUsers from "./pages/Admin/AdminUsers";
+import UserNotes from "./pages/Admin/UserNotes";
+import DeleteNotes from "./pages/Profile/DeleteNotes";
+import ContactAdmin from "./pages/Admin/ContactAdmin";
 
 function App() {
 
@@ -59,6 +62,7 @@ function App() {
         <Route path="/profile/change" element={<ChangePfofile></ChangePfofile>}></Route>
         <Route path="/profile/password" element={<ChangePassword></ChangePassword>}></Route>
         <Route path="/profile/delete" element={<DeleteAccount></DeleteAccount>}></Route>
+        <Route path="/profile/notes" element={<DeleteNotes></DeleteNotes>}></Route>
       </Route>
 
       <Route path="/add" element={
@@ -92,6 +96,18 @@ function App() {
         <Route path="/admin/contact" element={<AdminContact></AdminContact>}></Route>
         <Route path="/admin/users" element={<AdminUsers></AdminUsers>}></Route>
       </Route>
+
+      <Route path="/admin/user/:id" element={
+        <AdminPrivateRoute>
+          <UserNotes></UserNotes>
+        </AdminPrivateRoute>
+      }></Route>
+
+      <Route path="/admin/contact/:id" element={
+        <AdminPrivateRoute>
+          <ContactAdmin></ContactAdmin>
+        </AdminPrivateRoute>
+      }></Route>
 
     </Routes>
 

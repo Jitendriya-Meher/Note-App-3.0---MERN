@@ -1,20 +1,24 @@
-import { useDispatch, useSelector } from "react-redux";
-import NoteCard from "../components/Notes/NoteCard";
+import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import NoteCard from "../../components/Notes/NoteCard";
 
-function Dashboard() {
+function UserNotes() {
 
   const ref = useRef(null);
   const [query, setQuery] = useState("");
   const [notes,setNotes] = useState([]);
   const [queryNotes, setQueryNotes] = useState([]);
   const auth = useSelector(state=>state.auth);
+  const [username, setUsername] = useState("");
+
+  const {id} = useParams();
 
   const getAllNotes = async () => {
     try{
-      const res = await axios.get(`${auth.baseURL}/api/note/all`,{
+      const res = await axios.get(`${auth.baseURL}/api/admin/user/${id}`,{
         headers:{
           Authorization: auth.token
         }
@@ -23,12 +27,14 @@ function Dashboard() {
 
       if( data.success){
         toast.success(data.message);
-        setNotes(data.note);
-        setQueryNotes(data.note);
+        setNotes(data.notes);
+        setQueryNotes(data.notes);
+        setUsername(data.username);
       }
       else{
         toast.error(data.message);
       }
+      
     }
     catch(err){
       toast.error("please wait...");
@@ -45,11 +51,49 @@ function Dashboard() {
     getAllNotes();
   },[]);
 
+  const delAllNotes = async () => {
+    try{
+
+        const conf = window.confirm(`Are you sure you want to delete this user notes?`);
+
+        if( !conf){
+            return;
+        }
+
+        const res = await axios.delete(`${auth.baseURL}/api/admin/user/note/delete/${id}`,{
+            headers:{
+                Authorization: auth.token
+            }
+        });
+        const data = await res.data;
+
+        if( data.success){
+            toast.success(data.message);
+            getAllNotes();
+        }
+        else{
+            toast.error(data.message);
+        }
+    }
+    catch(err){
+        toast.error(err.message);
+    }
+  }
 
 
   return (
     <div className="flex w-11/12 max-w-[1160px] py-12 mx-auto gap-x-12 gap-y-0 justify-between flex-col">
 
+
+        <div className=" flex items-center justify-between mb-8">
+            <p className=" text-center text-3xl text-white">
+                This is {username} Notes
+            </p>
+            <button className=' bg-red-400 px-2 py-1 border border-red-700 rounded-md hover:bg-red-900/50 text-gray-900 hover:text-white transition-all duration-200 font-serif text-lg text-left'
+            onClick={delAllNotes}>
+                Delete All Notes
+            </button>
+        </div>
 
       <form className=" flex gap-x-8 w-11/12 mx-auto justify-center items-center flex-wrap"
       onSubmit={handleSubmit}>
@@ -81,7 +125,7 @@ function Dashboard() {
           {
             (notes.length===0) ? (
               <p className=" text-gray-300 text-xl m-8 mx-auto text-center">
-                Add some Notes...
+                No Notes found...
               </p>
             ):(
               (queryNotes.length===0) ? (
@@ -101,4 +145,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default UserNotes;

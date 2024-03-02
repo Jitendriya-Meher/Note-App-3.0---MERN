@@ -13,7 +13,7 @@ const AdminContact = () => {
         try{
             const res = await axios.get(`${auth.baseURL}/api/admin/contact`,{
                 headers:{
-                    Authorization: auth.token
+                    Authorization : auth.token
                 }
             });
             const data = await res.data;

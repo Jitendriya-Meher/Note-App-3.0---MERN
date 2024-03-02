@@ -6,7 +6,7 @@ require("dotenv").config();
 const authMiddleware = async ( req, res, next ) => {
 
     try{
-        const token = req.headers.authorization;
+        const token = req.headers.authorization  || req.headers.Authorization;
 
         if( !token){
             return res.json({

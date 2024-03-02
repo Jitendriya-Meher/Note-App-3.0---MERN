@@ -31,7 +31,7 @@ const AddNoteForm = ({noteTitle,noteDesc}) => {
 
             if( result.success){
                 toast.success(result.message);
-                navigate("/dashboard");
+                navigate(-1);
             }
             else{
                 toast.error(result.message);

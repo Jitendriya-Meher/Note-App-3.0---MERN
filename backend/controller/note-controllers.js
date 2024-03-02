@@ -1,4 +1,6 @@
 const Note = require("../models/note-model");
+const UserModel = require("../models/user-model");
+const bcrypt = require("bcrypt");
 
 
 const addNote = async ( req, res) => {
@@ -140,6 +142,27 @@ const deleteAllNote = async (req,res) => {
     try{
         const userID = req.userId;
 
+        const { password } = req.body;
+
+        const existingUser = await UserModel.findById(userID);
+
+        if( !existingUser){
+            return res.json({
+                message:"User not found with this token",
+                success: false
+            });
+        }
+
+        // check the password is correct or not
+        const isMatch = await bcrypt.compare(password, existingUser.password);
+
+        if( !isMatch ){
+            return res.json({
+                message:"Please enter your correct password",
+                success: false
+            });
+        }
+
         const delNotes = await Note.deleteMany({userID});
 
         return res.status(200).json({
@@ -150,7 +173,7 @@ const deleteAllNote = async (req,res) => {
     }
     catch(err){
         return res.status(200).json({
-            message:"server Error while deleting all note",
+            message:err.message,
             success:false
         });
     }
