@@ -32,6 +32,7 @@ const authMiddleware = async ( req, res, next ) => {
         
         req.userId = userData._id;
         req.username = userData.username;
+        req.isAdmin = userData.isAdmin;
 
         next();
         

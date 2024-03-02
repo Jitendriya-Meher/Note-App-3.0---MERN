@@ -20,6 +20,11 @@ import AddNotes from "./pages/Notes/AddNotes";
 import EditNotes from "./pages/Notes/EditNotes";
 import Note from "./pages/Notes/Note";
 import DeleteNote from "./pages/Notes/DeleteNote";
+import AdminPage from "./pages/Admin/AdminPage";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import AdminComp from "./components/Admin/AdminComp";
+import AdminContact from "./pages/Admin/AdminContact";
+import AdminUsers from "./pages/Admin/AdminUsers";
 
 function App() {
 
@@ -78,6 +83,15 @@ function App() {
           <DeleteNote></DeleteNote>
       }></Route>
 
+      <Route path="/admin" element={
+        <AdminPrivateRoute>
+          <AdminPage></AdminPage>
+        </AdminPrivateRoute>
+      }>
+        <Route path="/admin" element={<AdminComp></AdminComp>}></Route>
+        <Route path="/admin/contact" element={<AdminContact></AdminContact>}></Route>
+        <Route path="/admin/users" element={<AdminUsers></AdminUsers>}></Route>
+      </Route>
 
     </Routes>
 
