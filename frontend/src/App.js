@@ -16,6 +16,10 @@ import ProfileHome from "./components/Profile/ProfileHome";
 import ChangePfofile from "./pages/Profile/ChangeProfile";
 import ChangePassword from "./pages/Profile/ChangePassword";
 import DeleteAccount from "./pages/Profile/DeleteAccount";
+import AddNotes from "./pages/Notes/AddNotes";
+import EditNotes from "./pages/Notes/EditNotes";
+import Note from "./pages/Notes/Note";
+import DeleteNote from "./pages/Notes/DeleteNote";
 
 function App() {
 
@@ -51,6 +55,29 @@ function App() {
         <Route path="/profile/password" element={<ChangePassword></ChangePassword>}></Route>
         <Route path="/profile/delete" element={<DeleteAccount></DeleteAccount>}></Route>
       </Route>
+
+      <Route path="/add" element={
+        <PrivateRoute>
+          <AddNotes></AddNotes>
+        </PrivateRoute>
+      }></Route>
+
+      <Route path="/edit/:id" element={
+        <PrivateRoute>
+          <EditNotes></EditNotes>
+        </PrivateRoute>
+      }></Route>
+
+      <Route path="/note/:id" element={
+          <PrivateRoute>
+            <Note></Note>
+          </PrivateRoute>
+      }></Route>
+
+      <Route path="/delete/:id" element={         
+          <DeleteNote></DeleteNote>
+      }></Route>
+
 
     </Routes>
 

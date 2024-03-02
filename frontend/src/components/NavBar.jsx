@@ -51,6 +51,14 @@ const NavBar = () => {
 
         {
             isLoggedin &&
+            <NavLink to="/add">
+                <button className='py-[8px] bg-richblack-800 px-[12px] rounded-[8px] border border-richblack-700'>
+                    Add Notes
+                </button>
+            </NavLink>
+        }
+        {
+            isLoggedin &&
             <NavLink to="/dashboard">
                 <button className='py-[8px] bg-richblack-800 px-[12px] rounded-[8px] border border-richblack-700'>Dashboard</button>
             </NavLink>

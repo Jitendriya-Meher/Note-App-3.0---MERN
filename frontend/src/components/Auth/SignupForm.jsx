@@ -52,7 +52,6 @@ const SignupForm = () => {
         }
         catch(err){
             toast.error("please try again");
-            return;
         }
         setDisabledOtpButton(false);
     }
