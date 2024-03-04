@@ -75,11 +75,11 @@ const DeleteNote = () => {
         <h1 className='text-richblack-5 font-semibold text-[2rem] leading-[2.3rem]'>
             {note.title}
         </h1>
-        <p className='text-[1rem] leading-[1.2rem] mt-4 text-justify'>
+        <pre className='text-[1rem] leading-[1.2rem] mt-4 text-justify'>
             <span className='text-richblack-100'>
                  {note.description}
             </span>
-        </p>
+        </pre>
     </div>
 
     <div className=" w-11/12 max-w-[350px] mt-0 md:mt-8 mx-auto">

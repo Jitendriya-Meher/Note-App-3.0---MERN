@@ -16,7 +16,7 @@ const NoteCard = ({reference,index,item}) => {
   return (
     <motion.div drag dragConstraints={reference} whileDrag={{scale:1.1}} className={`w-60 h-72 rounded-[50px] bg-richblack-800/90 text-white py-9 px-7 relative overflow-hidden flex-shrink-0 border-2 border-richblack-700`}>
 
-      <p className=' text-md font-semibold leading-tight'>
+      <pre className=' text-md font-semibold leading-tight'>
         {
           title.length <= 30 ? (
             `${title}`
@@ -24,9 +24,9 @@ const NoteCard = ({reference,index,item}) => {
             `${title.substring(0, 30)}...`
           )
         }
-      </p>
+      </pre>
 
-      <p className=" text-sm mt-3 font-semibold leading-tight">
+      <pre className=" text-sm mt-3 font-semibold leading-tight break-words">
         {
           description.length <= 100 ? (
             `${description}`
@@ -34,7 +34,7 @@ const NoteCard = ({reference,index,item}) => {
             `${description.substring(0, 100)}...`
           )
         }
-      </p>
+      </pre>
 
       <div className=" absolute bottom-0 w-full left-0">
 
