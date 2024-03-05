@@ -4,18 +4,20 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import "./Note.css";
+import { useSelector } from 'react-redux';
 
 const Note = () => {
 
     const [note,setNotes] = useState({});
     const {id} = useParams();
     const navigate = useNavigate();
+    const {baseURL} = useSelector((state) => (state.auth));
 
     const getNote = async () => {
 
         try{
 
-            const res = await axios.get(`http://localhost:4000/api/note/${id}`);
+            const res = await axios.get(`${baseURL}/api/note/${id}`);
             console.log("res",res.data);
 
             const result = await res.data;

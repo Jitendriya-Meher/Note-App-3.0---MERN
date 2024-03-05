@@ -26,7 +26,6 @@ const AddNoteForm = ({noteTitle,noteDesc}) => {
                     }
                 }
             );
-            console.log("res",res);
             const result = res.data;
 
             if( result.success){

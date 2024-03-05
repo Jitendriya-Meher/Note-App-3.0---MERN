@@ -41,7 +41,6 @@ const SignupForm = () => {
             const res = await axios.post(`${baseURL}/api/auth/otp/signup`,otpPayload);
 
             const data = await res.data;
-            // console.log(data);
 
             if( data.success){
                 toast.success(data.message);
