@@ -200,8 +200,7 @@ const generateOtpContact = async (req, res) => {
 
         return res.json({
             success: true,
-            message: `OPT has been send to your email`,
-            otpPayload
+            message: `Response send to user email successfully`,
         });
 
     }

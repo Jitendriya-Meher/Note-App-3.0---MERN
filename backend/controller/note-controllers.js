@@ -85,9 +85,9 @@ const editNote = async (req, res) => {
     try{
 
         const noteID = req.params.id;
-        const {title, description} = req.body;
+        const {title, description, isPublic} = req.body;
 
-        const note = await Note.findByIdAndUpdate(noteID,{title, description},{new:true});
+        const note = await Note.findByIdAndUpdate(noteID,{title, description, isPublic},{new:true});
 
         if( !note){
             return res.status(200).json({
@@ -179,4 +179,25 @@ const deleteAllNote = async (req,res) => {
     }
 }
 
-module.exports = {addNote,getAllNotes,getSingleNote,editNote,deleteNote,deleteAllNote};
+const getAllPublicNotes = async (req, res) => {
+    try{
+
+        const notes = await Note.find({
+            isPublic: true 
+        });
+
+        return res.status(200).json({
+            message:"note fetched successfully",
+            success: true,
+            notes:notes
+        });
+    }
+    catch(err){
+        return res.status(200).json({
+            message:"server Error while fetching user notes",
+            success:false
+        });
+    }
+}
+
+module.exports = {addNote,getAllNotes,getSingleNote,editNote,deleteNote,deleteAllNote, getAllPublicNotes};

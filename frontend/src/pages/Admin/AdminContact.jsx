@@ -32,6 +32,28 @@ const AdminContact = () => {
         }
     }
 
+    const deleteMessage = async (id) => {
+        try{
+            const res = await axios.delete(`${auth.baseURL}/api/admin/contact/${id}`,{
+                headers:{
+                    Authorization: auth.token 
+                }
+            });
+            const data = await res.data;
+
+            if( data.success){
+                toast.success(data.message);
+                getAllContacts();
+            }
+            else{
+                toast.error(data.message);
+            }
+        }
+        catch(err){
+            toast.error(err.message);
+        }
+    }
+
     useEffect(() => {
         getAllContacts();
     },[]);
@@ -46,9 +68,9 @@ const AdminContact = () => {
         <div className=" font-mono">
 
             {
-                contacts.map((user,i) => (
+                contacts.map((user) => (
                     <ContactUserCard key={user._id}
-                    user={user}></ContactUserCard>
+                    user={user} deleteMessage={deleteMessage}></ContactUserCard>
                 ))
             }
 

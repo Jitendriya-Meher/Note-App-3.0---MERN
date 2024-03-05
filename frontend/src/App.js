@@ -28,6 +28,7 @@ import AdminUsers from "./pages/Admin/AdminUsers";
 import UserNotes from "./pages/Admin/UserNotes";
 import DeleteNotes from "./pages/Profile/DeleteNotes";
 import ContactAdmin from "./pages/Admin/ContactAdmin";
+import PublicNote from "./pages/PublicNote";
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
       <Route path="/signup" element={<Signup></Signup>}></Route>
       <Route path="/forgot-password" element={<ForgotPassword></ForgotPassword>}></Route>
       <Route path="/reset-password/:email" element={<ResetPassword></ResetPassword>}></Route>
+      <Route path="/publicnotes" element={<PublicNote></PublicNote>}></Route>
 
       <Route path="/dashboard" element={
         <PrivateRoute>
@@ -107,7 +109,7 @@ function App() {
         <AdminPrivateRoute>
           <ContactAdmin></ContactAdmin>
         </AdminPrivateRoute>
-      }></Route>
+      }></Route>   
 
     </Routes>
 

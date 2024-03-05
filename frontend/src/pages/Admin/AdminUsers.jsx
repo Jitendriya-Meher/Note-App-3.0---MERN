@@ -7,6 +7,9 @@ import { useSelector } from 'react-redux';
 const AdminUsers = () => {
 
     const [ users, setUsers] = useState([]);
+    const [ searchUsers, setSearchUsers] = useState([]);
+    const [ query , setQuery] = useState("");
+
     const auth = useSelector((s) => (s.auth));
 
     const getAllUsers = async () => {
@@ -43,10 +46,24 @@ const AdminUsers = () => {
             All Users
         </h1>
 
+        <label htmlFor="a" className=" w-full block relative px-10 pb-5 text-sm">
+            <input type="search" name="text"
+            id="a" required
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              const newUsers = users.filter((user) => (user.username.includes(e.target.value)));
+              setSearchUsers(newUsers);
+            }}
+            placeholder='Search user by username'
+            className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px] border-b-[1px] outline-1'
+            />
+        </label>
+
         <div className=" font-mono">
 
             {
-                users.map((user) => (
+                searchUsers.map((user) => (
                     <AdminUsersCard key={user._id}
                     user={user}></AdminUsersCard>
                 ))

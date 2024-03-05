@@ -107,11 +107,18 @@ const getUserContact = async (req, res) => {
         
         const {id} = req.params;
 
-        const contact = await Note.findById(id);
+        const contact = await Contact.findById(id);
+
+        if( !contact){
+            return res.json({
+                success: false,
+                message: "contact not found",
+            });
+        }
 
         return res.json({
             success: true,
-            message: "Users notes deleted successfully",
+            message: "contact fetch successfully",
             contact
         });
 
@@ -129,11 +136,18 @@ const deleteUserContact = async (req, res) => {
         
         const {id} = req.params;
 
-        const contact = await Note.findByIdAndDelete(id);
+        const contact = await Contact.findByIdAndDelete(id);
+
+        if( !contact){
+            return res.json({
+                success: false,
+                message: "contact not found"
+            });
+        }
 
         return res.json({
             success: true,
-            message: "Users notes deleted successfully",
+            message: "Users contact deleted successfully",
             contact
         });
 
